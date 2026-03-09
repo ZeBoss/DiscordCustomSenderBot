@@ -86,7 +86,7 @@ async def on_message(message):
         else:
             await message.channel.send('Please register by typeing a message like this:')
             await message.channel.send('REGISTER#####NAME HERE#####IMAGE LINK HERE')
-            await message.channel.send("Like this: REGISTER#####Mr Mirrors, Engulfed#####https://fallenlondon.wiki/w/images/3/3b/Mirror1.png")
+            await message.channel.send("Like this: REGISTER#####Charles Whitmee#####https://i.postimg.cc/pr5Qw0C2/Chill-Copy.png")
         
 
             
