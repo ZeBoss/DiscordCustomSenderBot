@@ -1,5 +1,3 @@
-
-
 file = open("Config.txt","r")
 TOKEN = str(file.read())
 file.close()
