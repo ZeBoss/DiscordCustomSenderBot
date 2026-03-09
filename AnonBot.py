@@ -1,6 +1,5 @@
 
 
-#TOKEN = 'MTA0Mzg4NDkwMDk0NTc3NjY1MA.GP2pjp.YH-W5aOZQoF33tOfExtpPEvaAoxWp1w8rNUcI4'
 file = open("Config.txt","r")
 TOKEN = str(file.read())
 file.close()
