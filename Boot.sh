@@ -1,2 +1,8 @@
+#!/bin/bash
+
 killall python
-nohup python AnonBot.py &
+python /home/pi/Bot/AnonBot.py > /dev/null  2>&1 &
+
+
+
+

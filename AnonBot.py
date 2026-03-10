@@ -141,10 +141,10 @@ async def on_ready():
     await tree.sync(guild=discord.Object(id="1043885670629900288")) #guild specific: leave blank if global (global registration can take 1-24 hours)
 
 
-    sql = "SELECT name FROM userdata WHERE pid=?"
-    cursor.execute(sql,"123456789")
+    sql = "SELECT char_name FROM userdata WHERE user_id=(%s)"
+    cursor.execute(sql,("123456789",))
     myresult = cursor.fetchone()
-    print(myresult)
+    print(myresult[0])
     
     #user = await client.fetch_user("301013678051033090")
     #await user.send("Bot is now online!")
