@@ -94,35 +94,33 @@ async def on_message(message):
 @app_commands.describe(whattosay = "What do you want to say?")
 async def slash2(interaction: discord.Interaction, whattosay: str):
     #getting user details
-    file = open("Faces.DAWN","r")
-    Faces = ast.literal_eval(file.read())
-    file.close()
 
     await interaction.response.send_message(content="Sending...", ephemeral = True, delete_after = 0)
     Id = str(interaction.user.id)
     try:
     #if True == True:
-        for X in Faces:
-            if X[0] == Id:
-                username = str(X[1])
-                avatar_url = str(X[2])
-                #message = str(await interaction.original_response())
+
+        sql = "SELECT * FROM userdata WHERE user_id=(%s)"
+        cursor.execute(sql,(Id,))
+        SQLout = cursor.fetchone()
+        print(SQLout) 
+        #message = str(await interaction.original_response())
 
 
-                #webhook = await interaction.channel.create_webhook(name="Dawn")
-                webhooks = await interaction.channel.webhooks()
-                #print(webhooks)
-                try:
-                    for webhook in webhooks:
-                        #contents = urlopen(avatar_url).read()
-                        #await webhook.edit(name=username,avatar=contents)
+        #webhook = await interaction.channel.create_webhook(name="Dawn")
+        webhooks = await interaction.channel.webhooks()
+        #print(webhooks)
+        try:
+            for webhook in webhooks:
+                #contents = urlopen(avatar_url).read()
+                #await webhook.edit(name=username,avatar=contents)
 
-                        await webhook.send(content=whattosay,username=username,avatar_url=avatar_url)
-                except:
-                    do = "nothing"
-                #username=str(interaction.user), avatar_url=str(interaction.user.display_avatar)
-               # webhooks = await interaction.channel.webhooks()
-               # for webhook in webhooks:
+                await webhook.send(content=whattosay,username=SQLout[1],avatar_url=SQLout[2])
+        except:
+            do = "nothing"
+        #username=str(interaction.user), avatar_url=str(interaction.user.display_avatar)
+        # webhooks = await interaction.channel.webhooks()
+        # for webhook in webhooks:
     except:
    # else:
         await interaction.response.send_message(f"DM me anything for how to register!", ephemeral = True) 
@@ -141,11 +139,13 @@ async def on_ready():
     await tree.sync(guild=discord.Object(id="1043885670629900288")) #guild specific: leave blank if global (global registration can take 1-24 hours)
 
 
-    sql = "SELECT char_name FROM userdata WHERE user_id=(%s)"
-    cursor.execute(sql,("123456789",))
-    myresult = cursor.fetchone()
-    print(myresult[0])
-    
+    #sql = "SELECT char_name FROM userdata WHERE user_id=(%s)"
+    #cursor.execute(sql,("123456789",))
+    #myresult = cursor.fetchone()
+    #print(myresult[0])
+    #Working SQL code to get character name from database using user id. Uncomment and change the user id to test.
+
+
     #user = await client.fetch_user("301013678051033090")
     #await user.send("Bot is now online!")
 

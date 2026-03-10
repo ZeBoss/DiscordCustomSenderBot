@@ -9,4 +9,4 @@ char_pic VARCHAR(255)
 );
 
 
-INSERT INTO userdata (user_id,char_name, char_pic) VALUES ('123456789', 'John Doe', 'https://example.com/johndoe.jpg');
+REPLACE INTO userdata (user_id,char_name, char_pic) VALUES ('123456789', 'John Doe', 'https://example.com/johndoe.jpg');
