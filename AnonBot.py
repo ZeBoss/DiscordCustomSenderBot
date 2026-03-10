@@ -44,55 +44,26 @@ async def on_message(message):
         if (message.author.bot):
             return
 
-        Message = (message.content).split("#####")
-        if Message[0] == "REGISTER":
-            
-            file = open("Faces.DAWN","r")
-            Faces = ast.literal_eval(file.read())
-            file.close()
-
-            try:
-                Id = str(message.author.id)
-                New = True
-                Count = 0
-                for X in Faces:
-                    if X[0] == Id:
-                        X[1] = Message[1]
-                        X[2] = Message[2]
-                        
-                        file = open("Faces.DAWN","w")
-                        file.write(str(Faces))
-                        file.close()
-                        New = False
-
-                    Count = Count + 1
-                    if Count == (len(Faces)):
-                        if New == True:
-                            Faces.append([Id,Message[1],Message[2]])
-                            file = open("Faces.DAWN","w")
-                            file.write(str(Faces))
-                            file.close()
-                            New = False
-
-
-
-                await message.channel.send('Registered!')
-
-            except:
-                await message.channel.send('Incorrect Format')
-            
-        else:
-            await message.channel.send('Please register by typeing a message like this:')
-            await message.channel.send('REGISTER#####NAME HERE#####IMAGE LINK HERE')
-            await message.channel.send("Like this: REGISTER#####Charles Whitmee#####https://i.postimg.cc/pr5Qw0C2/Chill-Copy.png")
+tree.command(name = 'register', description='Register your character') #guild specific slash command
+#@app_commands.checks.cooldown(1, 180.0, key=lambda i: (i.guild_id, i.user.id))
+@app_commands.describe(char_name = "Your character name", avatar_url = "Your character avatar url")
+async def register(interaction: discord.Interaction, char_name: str, avatar_url: str):
+    try:
+        Id = str(interaction.user.id)
+        sql = "INSERT INTO userdata (user_id, char_name, avatar_url) VALUES (%s, %s, %s)"
+        val = (Id, char_name, avatar_url)
+        cursor.execute(sql, val)
+        mydb.commit()
         
+        await interaction.response.send_message(f"Registration successful!", ephemeral = True)
+    except:
+        await interaction.response.send_message(f"Registration failed.", ephemeral = True)
 
-            
 
 @tree.command(name = 'speak', description='Speak!') #guild specific slash command
 #@app_commands.checks.cooldown(1, 180.0, key=lambda i: (i.guild_id, i.user.id))
 @app_commands.describe(whattosay = "What do you want to say?")
-async def slash2(interaction: discord.Interaction, whattosay: str):
+async def speak(interaction: discord.Interaction, whattosay: str):
     #getting user details
 
     await interaction.response.send_message(content="Sending...", ephemeral = True, delete_after = 0)
@@ -131,7 +102,7 @@ async def on_test_error(interaction: discord.Interaction, error: app_commands.Ap
         await interaction.response.send_message(str(error), ephemeral=True)
         
 @tree.command( name = 'help', description='Learn"') #guild specific slash command
-async def slash(interaction: discord.Interaction):
+async def help(interaction: discord.Interaction):
     await interaction.response.send_message(f"DM me anything for how to register!", ephemeral = True)
 
 @client.event
