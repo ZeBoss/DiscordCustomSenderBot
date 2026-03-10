@@ -1,10 +1,10 @@
 file = open("Config.txt","r")
 TOKEN = str(file.read())
 file.close()
+#The Token
 
 
-
-
+import mysql.connector
 import discord
 from discord import app_commands
 import json
@@ -13,16 +13,14 @@ import time
 from urllib.request import urlopen
 import base64
 
-#X = open("Answers.ask" , "r")
-#Knowledge = X.read()
-#X.close()
 
-#Knowledge = Knowledge.splitlines()
-
-#for i in range(len(Knowledge)):
-#    Knowledge[i] = Knowledge[i].split(",")
-
-#print(Knowledge)
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="CustomSenderBot",
+  password="",
+  database="CustomSenderBotData"
+)
+cursor = mydb.cursor()
 
 
 class aclient(discord.Client):
@@ -93,7 +91,7 @@ async def on_message(message):
 
 @tree.command(name = 'speak', description='Speak!') #guild specific slash command
 #@app_commands.checks.cooldown(1, 180.0, key=lambda i: (i.guild_id, i.user.id))
-@app_commands.describe(whattosay = "What do you want to say test?")
+@app_commands.describe(whattosay = "What do you want to say?")
 async def slash2(interaction: discord.Interaction, whattosay: str):
     #getting user details
     file = open("Faces.DAWN","r")
@@ -135,12 +133,20 @@ async def on_test_error(interaction: discord.Interaction, error: app_commands.Ap
         await interaction.response.send_message(str(error), ephemeral=True)
         
 @tree.command( name = 'help', description='Learn"') #guild specific slash command
-async def slash2(interaction: discord.Interaction):
+async def slash(interaction: discord.Interaction):
     await interaction.response.send_message(f"DM me anything for how to register!", ephemeral = True)
 
 @client.event
 async def on_ready():
-    user = await client.fetch_user("487417516935610372")
-    await user.send("Hello there!")
+    await tree.sync(guild=discord.Object(id="1043885670629900288")) #guild specific: leave blank if global (global registration can take 1-24 hours)
+
+
+    sql = "SELECT name FROM userdata WHERE pid=?"
+    cursor.execute(sql,"123456789")
+    myresult = cursor.fetchone()
+    print(myresult)
+    
+    #user = await client.fetch_user("301013678051033090")
+    #await user.send("Bot is now online!")
 
 client.run(TOKEN)
