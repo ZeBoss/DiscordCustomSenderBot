@@ -103,7 +103,7 @@ async def slash2(interaction: discord.Interaction, whattosay: str):
         sql = "SELECT * FROM userdata WHERE user_id=(%s)"
         cursor.execute(sql,(Id,))
         SQLout = cursor.fetchone()
-        print(SQLout) 
+        #print(SQLout) 
         #message = str(await interaction.original_response())
 
 
