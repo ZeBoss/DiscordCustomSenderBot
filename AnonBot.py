@@ -75,6 +75,7 @@ async def slash2(interaction: discord.Interaction, whattosay: str):
         webhooks = await interaction.channel.webhooks()
         try:
             for webhook in webhooks:
+                #whattosay="```ansi\n\u001b[0;31mThis is red text\u001b[0m\n\u001b[0;32mThis is green text\u001b[0m\n\u001b[1;34mThis is bold blue text\u001b[0m\n```"
                 await webhook.send(content=whattosay,username=SQLout[1],avatar_url=SQLout[2])
         except:
             await interaction.response.send_message(f"Message failed, possible issue with registration details.", ephemeral = True) 
