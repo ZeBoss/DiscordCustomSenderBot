@@ -52,6 +52,8 @@ async def register(interaction: discord.Interaction, char_name: str, avatar_url:
         Id = str(interaction.user.id)
         sql = "REPLACE INTO userdata (user_id, char_name, char_pic) VALUES (%s, %s, %s)"
         val = (Id, char_name, avatar_url)
+
+        cursor = mydb.cursor()
         cursor.execute(sql, val)
         mydb.commit()
         await interaction.response.send_message(f"Registration successful!", ephemeral = True)
@@ -69,6 +71,8 @@ async def slash2(interaction: discord.Interaction, whattosay: str):
     try:
 
         sql = "SELECT * FROM userdata WHERE user_id=(%s)"
+
+        cursor = mydb.cursor()
         cursor.execute(sql,(Id,))
         SQLout = cursor.fetchone()
 
